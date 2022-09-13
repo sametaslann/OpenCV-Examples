@@ -38,10 +38,14 @@ while True:
         
         for (x,y,r) in circles:
             radius = r
-            horizontalDist = radius * 10
+            horizontalDist = 10 / pow(2,radius-1)
             verticalDistance = math.sqrt(abs(320-x)*abs(320-x) + abs(230-y)*abs(230-y)) * (0.3)
-            pertencage = str(math.sqrt( (horizontalDist*horizontalDist) + (verticalDistance*verticalDistance) ))
-            finalStr = "%" + pertencage
+            print("Horizontal: " , horizontalDist)
+            print("vertical: " , verticalDistance)
+            
+            
+            pertencage = np.arctan(verticalDistance/horizontalDist)
+            finalStr = "%" + str(pertencage)
             
             
             cv.line(img=original, pt1=(320, 230), pt2=(x, y), color=(255, 0, 0), thickness=3, lineType=8, shift=0)
