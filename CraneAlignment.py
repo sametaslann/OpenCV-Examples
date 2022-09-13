@@ -3,7 +3,7 @@ import math
 import cv2 as cv
 import numpy as np
 import time
-
+#RTSP
 cap = cv.VideoCapture(0,cv.CAP_DSHOW)
 radius = 0
 
@@ -36,13 +36,16 @@ while True:
         
         circles = np.round(circles[0, :]).astype("int")
         
-        
         for (x,y,r) in circles:
             radius = r
+            horizontalDist = radius * 10
+            verticalDistance = math.sqrt(abs(320-x)*abs(320-x) + abs(230-y)*abs(230-y)) * (0.3)
+            pertencage = str(math.sqrt( (horizontalDist*horizontalDist) + (verticalDistance*verticalDistance) ))
+            finalStr = "%" + pertencage
             
-            distance = math.sqrt(abs(320-x)*abs(320-x) + abs(230-y)*abs(230-y))
-            cv.line(img=original, pt1=(320, 230), pt2=(x, y), color=(255, 0, 0), thickness=5, lineType=8, shift=0)
-            cv.putText(original,str(distance),(20,20), cv.FONT_HERSHEY_SIMPLEX,1,(255,255,255),thickness=2)
+            
+            cv.line(img=original, pt1=(320, 230), pt2=(x, y), color=(255, 0, 0), thickness=3, lineType=8, shift=0)
+            cv.putText(original,str(finalStr),(20,20), cv.FONT_HERSHEY_SIMPLEX,1,(255,255,255),thickness=2)
             
             if x<330+radius and x>310-radius and y>220-radius and y<240+radius:
                 print(circles)
