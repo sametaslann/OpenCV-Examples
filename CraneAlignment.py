@@ -1,9 +1,10 @@
 from asyncore import write
+import math
 import cv2 as cv
 import numpy as np
 import time
 
-cap = cv.VideoCapture(1,cv.CAP_DSHOW)
+cap = cv.VideoCapture(0,cv.CAP_DSHOW)
 radius = 0
 
 while True:
@@ -32,9 +33,17 @@ while True:
     cv.rectangle(original, (315-radius,225-radius), (325+radius,235+radius), (0, 0, 255), thickness=1)
 
     if circles is not None:
+        
         circles = np.round(circles[0, :]).astype("int")
+        
+        
         for (x,y,r) in circles:
             radius = r
+            
+            distance = math.sqrt(abs(320-x)*abs(320-x) + abs(230-y)*abs(230-y))
+            cv.line(img=original, pt1=(320, 230), pt2=(x, y), color=(255, 0, 0), thickness=5, lineType=8, shift=0)
+            cv.putText(original,str(distance),(20,20), cv.FONT_HERSHEY_SIMPLEX,1,(255,255,255),thickness=2)
+            
             if x<330+radius and x>310-radius and y>220-radius and y<240+radius:
                 print(circles)
                 print("Founded..")
