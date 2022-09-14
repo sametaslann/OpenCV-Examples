@@ -4,7 +4,7 @@ import cv2 as cv
 import numpy as np
 import time
 #RTSP
-cap = cv.VideoCapture(0,cv.CAP_DSHOW)
+cap = cv.VideoCapture(1,cv.CAP_DSHOW)
 radius = 0
 
 while True:
@@ -25,10 +25,8 @@ while True:
     circles = cv.HoughCircles(gray_blurred, cv.HOUGH_GRADIENT, 1,200,param1=50,
                               param2=30,minRadius=0,maxRadius=100)
 
+#param2-1 yuvarlak algılama  max min radius
 
-    height, width, channels = frame.shape
-    upper_left = (width // 3, height // 3)
-    bottom_right = (width * 3 // 3, height * 3 // 3)
     # draw in the image
     cv.rectangle(original, (315-radius,225-radius), (325+radius,235+radius), (0, 0, 255), thickness=1)
 
@@ -36,29 +34,32 @@ while True:
         
         circles = np.round(circles[0, :]).astype("int")
         
-        for (x,y,r) in circles:
-            radius = r
-            horizontalDist = 1500/r
-            verticalPx = math.sqrt(abs(320-x)*abs(320-x) + abs(230-y)*abs(230-y))
+        for (circ_x,circ_y,circ_r) in circles:
+            radius = circ_r
+            horizontalDist = 1500/circ_r
+            verticalPx = math.sqrt(abs(320-circ_x)*abs(320-circ_x) + abs(230-circ_y)*abs(230-circ_y))
             print(verticalPx)
             verticalDistance = (horizontalDist)/500 * (verticalPx )
             # print("Horizontal: " , horizontalDist)
             # print("vertical: " , verticalDistance)
             
             
-            pertencage = (180/(22/7))*np.arctan(verticalDistance/horizontalDist)
-            pertencage = round(pertencage,2)
-            finalStr = str(pertencage) + "degree"
+            degree = (180/math.pi)*np.arctan(verticalDistance/horizontalDist)
+            degree = round(degree,2)
+            finalStr = str(degree) + "degree"
             
+            centerOfCamera = (320, 230)
+            centerOfCircle = (circ_x, circ_y)
+            blueColor = (255, 0, 0)
+            CyanColor = (255,255,0)
             
-            cv.line(img=original, pt1=(320, 230), pt2=(x, y), color=(255, 0, 0), thickness=3, lineType=5, shift=0)
-            cv.putText(original,str(finalStr),(30,30), cv.FONT_HERSHEY_SIMPLEX,1,(255,0,0),thickness=2)
+            cv.line(img=original, pt1 = centerOfCamera, pt2=centerOfCircle, color=blueColor, thickness=3, lineType=5, shift=0)
+            cv.putText(original, str(finalStr), (30,30), cv.FONT_HERSHEY_SIMPLEX, 1, blueColor, thickness=2)
             
-            if x<330+radius and x>310-radius and y>220-radius and y<240+radius:
-                print(circles)
-                print("Founded..")
-                cv.circle(original, (x,y) ,r , (255,255,0),2)
-                cv.circle(original, (x,y) ,1 , (255,255,0),3)
+            if circ_x < 330+radius and circ_x > 310-radius and circ_y > 220-radius and circ_y < 240+radius:
+                print("Coordinates: " , circles)
+                cv.circle(original, (circ_x,circ_y) ,circ_r , CyanColor,2)
+                cv.circle(original, (circ_x,circ_y) ,1 , CyanColor,3)
 
     cv.imshow("Circle", original)        
     #cv.imshow("Red", red_color)  
