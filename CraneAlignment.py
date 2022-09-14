@@ -39,9 +39,11 @@ while True:
         for (x,y,r) in circles:
             radius = r
             horizontalDist = 1500/r
-            verticalDistance = 20/(horizontalDist) * math.sqrt(abs(320-x)*abs(320-x) + abs(230-y)*abs(230-y))
-            print("Horizontal: " , horizontalDist)
-            print("vertical: " , verticalDistance)
+            verticalPx = math.sqrt(abs(320-x)*abs(320-x) + abs(230-y)*abs(230-y))
+            print(verticalPx)
+            verticalDistance = (horizontalDist)/500 * (verticalPx )
+            # print("Horizontal: " , horizontalDist)
+            # print("vertical: " , verticalDistance)
             
             
             pertencage = (180/(22/7))*np.arctan(verticalDistance/horizontalDist)
@@ -50,7 +52,7 @@ while True:
             
             
             cv.line(img=original, pt1=(320, 230), pt2=(x, y), color=(255, 0, 0), thickness=3, lineType=5, shift=0)
-            cv.putText(original,str(finalStr),(30,30), cv.FONT_HERSHEY_SIMPLEX,1,(255,255,255),thickness=2)
+            cv.putText(original,str(finalStr),(30,30), cv.FONT_HERSHEY_SIMPLEX,1,(255,0,0),thickness=2)
             
             if x<330+radius and x>310-radius and y>220-radius and y<240+radius:
                 print(circles)
