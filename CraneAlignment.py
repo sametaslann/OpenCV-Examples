@@ -4,14 +4,14 @@ import cv2 as cv
 import numpy as np
 import time
 #RTSP
-cap = cv.VideoCapture(1,cv.CAP_DSHOW)
+cap = cv.VideoCapture(0,cv.CAP_DSHOW)
 radius = 0
 
 while True:
     ret,frame = cap.read()
     if frame is None:
         break
-    original = frame.copy()
+    originalFrame = frame.copy()
     hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
     lower_red = np.array([160,100,20])
@@ -28,7 +28,7 @@ while True:
 #param2-1 yuvarlak algılama  max min radius
 
     # draw in the image
-    cv.rectangle(original, (315-radius,225-radius), (325+radius,235+radius), (0, 0, 255), thickness=1)
+    cv.rectangle(originalFrame, (315-radius,225-radius), (325+radius,235+radius), (0, 0, 255), thickness=1)
 
     if circles is not None:
         
@@ -38,7 +38,7 @@ while True:
             radius = circ_r
             horizontalDist = 1500/circ_r
             verticalPx = math.sqrt(abs(320-circ_x)*abs(320-circ_x) + abs(230-circ_y)*abs(230-circ_y))
-            print(verticalPx)
+            print(radius)
             verticalDistance = (horizontalDist)/500 * (verticalPx )
             # print("Horizontal: " , horizontalDist)
             # print("vertical: " , verticalDistance)
@@ -46,22 +46,22 @@ while True:
             
             degree = (180/math.pi)*np.arctan(verticalDistance/horizontalDist)
             degree = round(degree,2)
-            finalStr = str(degree) + "degree"
+            finalStr = str(degree) + "degree  Dist:" + str(round(horizontalDist,1)) 
             
             centerOfCamera = (320, 230)
             centerOfCircle = (circ_x, circ_y)
             blueColor = (255, 0, 0)
             CyanColor = (255,255,0)
             
-            cv.line(img=original, pt1 = centerOfCamera, pt2=centerOfCircle, color=blueColor, thickness=3, lineType=5, shift=0)
-            cv.putText(original, str(finalStr), (30,30), cv.FONT_HERSHEY_SIMPLEX, 1, blueColor, thickness=2)
+            cv.line(img=originalFrame, pt1 = centerOfCamera, pt2=centerOfCircle, color=blueColor, thickness=3, lineType=5, shift=0)
+            cv.putText(originalFrame, str(finalStr), (30,30), cv.FONT_HERSHEY_SIMPLEX, 1, blueColor, thickness=2)
             
             if circ_x < 330+radius and circ_x > 310-radius and circ_y > 220-radius and circ_y < 240+radius:
                 print("Coordinates: " , circles)
-                cv.circle(original, (circ_x,circ_y) ,circ_r , CyanColor,2)
-                cv.circle(original, (circ_x,circ_y) ,1 , CyanColor,3)
+                cv.circle(originalFrame, (circ_x,circ_y) ,circ_r , CyanColor,2)
+                cv.circle(originalFrame, (circ_x,circ_y) ,1 , CyanColor,3)
 
-    cv.imshow("Circle", original)        
+    cv.imshow("Circle", originalFrame)        
     #cv.imshow("Red", red_color)  
 
     k = cv.waitKey(5) & 0xFF 
