@@ -77,14 +77,17 @@ while True:
             degree = (180/math.pi)*np.arctan(verticalDistance/horizontalDist)
             degree = round(degree,2)
             
-            #Put some variables to the frame 
-            finalStr = "Deg:" + str(degree) +str(round(horizontalDist,1)) + "-r:" + str(radius) + "-Vh:" + str(verticalDistance) + "-Ho: " + str(horizontalDist)
-            cv.putText(originalFrame, str(finalStr), (30,30), cv.FONT_HERSHEY_SIMPLEX, 1, blueColor, thickness=2)
             
             centerOfCamera = (width//2, height//2)
             centerOfCircle = (circ_x, circ_y)
             blueColor = (255, 0, 0)
             CyanColor = (255,255,0)
+            
+            
+            #Print some variables to the frame as text
+            finalStr = "Deg:" + str(degree) +str(round(horizontalDist,1)) + "-r:" + str(radius) + "-Vh:" + str(verticalDistance) + "-Ho: " + str(horizontalDist)
+            cv.putText(originalFrame, str(finalStr), (30,30), cv.FONT_HERSHEY_SIMPLEX, 1, blueColor, thickness=2)
+            
             
             #Draws line from center of the camera to center of the circle
             cv.line(img=originalFrame, pt1 = centerOfCamera, pt2=centerOfCircle, color=blueColor, thickness=3, lineType=5, shift=0)
