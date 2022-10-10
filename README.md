@@ -1,5 +1,5 @@
 # OpenCv-Examples
-***My Opencv projects using python***  
+***Opencv projects using python***  
 
 ***CraneAlignment projects finds the real height and horizontal distance and calculate the degree between camera and red circle(reference).***   
 https://user-images.githubusercontent.com/98954356/194945804-4e015536-3d1c-4fe1-a5ac-9a39e58edcec.mp4
