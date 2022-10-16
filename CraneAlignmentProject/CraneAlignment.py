@@ -8,7 +8,7 @@ import time
 
 cap = cv.VideoCapture(0,cv.CAP_DSHOW)
 
-radius = 0
+radius = 0 #asdkmaskdlsa
 realRadius = 3 #1 metredeki gerçek circle çapı 
 
 ret,frame = cap.read()
